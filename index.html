@@ -1,1 +1,774 @@
-# Am-rica-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReplyGenius — AI Review Replies in Seconds</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0f0f0f;
+    --paper: #f7f6f2;
+    --mid: #6b6b6b;
+    --rule: #e0ddd6;
+    --accent: #1a6b3c;
+    --accent-light: #e8f5ee;
+    --warn: #c0392b;
+    --warn-light: #fdf0ef;
+    --gold: #d4a017;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    border-bottom: 1px solid var(--rule);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .logo {
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    letter-spacing: -0.3px;
+    color: var(--ink);
+  }
+
+  .logo span { color: var(--accent); }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    border: 1px solid #b8dfc8;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* HERO */
+  .hero {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 52px 24px 36px;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(32px, 6vw, 52px);
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero p {
+    font-size: 16px;
+    color: var(--mid);
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto 32px;
+  }
+
+  /* PLATFORM PILLS */
+  .platforms {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .platform-pill {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--rule);
+    background: white;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--mid);
+  }
+
+  .platform-pill:hover, .platform-pill.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  /* STATS BAR */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    padding: 20px 24px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    background: white;
+    margin-bottom: 40px;
+  }
+
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 26px;
+    color: var(--ink);
+  }
+  .stat-label { font-size: 11px; color: var(--mid); margin-top: 2px; }
+
+  /* MAIN TOOL */
+  .tool {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+  }
+
+  .card {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-header-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .card-header-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .card-header-sub {
+    font-size: 12px;
+    color: var(--mid);
+    margin-left: auto;
+  }
+
+  .card-body { padding: 20px; }
+
+  /* REVIEW TYPE SELECTOR */
+  .review-types {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .type-btn {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--mid);
+  }
+
+  .type-btn.positive.active { background: #e8f5ee; border-color: var(--accent); color: var(--accent); }
+  .type-btn.negative.active { background: var(--warn-light); border-color: var(--warn); color: var(--warn); }
+  .type-btn.neutral.active { background: #fff8e6; border-color: var(--gold); color: #9a7400; }
+
+  /* STARS */
+  .stars-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+
+  .star {
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.1s;
+    filter: grayscale(1);
+    opacity: 0.3;
+  }
+
+  .star.lit { filter: none; opacity: 1; }
+  .star:hover { transform: scale(1.15); }
+
+  /* TEXTAREA */
+  textarea {
+    width: 100%;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--paper);
+    resize: vertical;
+    min-height: 110px;
+    outline: none;
+    transition: border-color 0.15s;
+    line-height: 1.5;
+  }
+
+  textarea:focus { border-color: var(--accent); background: white; }
+  textarea::placeholder { color: #b0ada6; }
+
+  /* TONE SELECT */
+  .tone-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+
+  .tone-chip {
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--rule);
+    background: white;
+    cursor: pointer;
+    color: var(--mid);
+    transition: all 0.15s;
+  }
+
+  .tone-chip.active {
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+  }
+
+  /* GENERATE BUTTON */
+  .btn-generate {
+    width: 100%;
+    margin-top: 20px;
+    padding: 16px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: -0.1px;
+  }
+
+  .btn-generate:hover { background: #155c32; transform: translateY(-1px); }
+  .btn-generate:disabled { background: #b0c4ba; cursor: not-allowed; transform: none; }
+
+  /* OUTPUT */
+  .output-card {
+    display: none;
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .output-card.visible { display: block; }
+
+  .output-body {
+    padding: 20px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink);
+    white-space: pre-wrap;
+    min-height: 80px;
+  }
+
+  .output-actions {
+    padding: 12px 20px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    gap: 10px;
+    background: var(--paper);
+  }
+
+  .btn-copy, .btn-regen {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 1px solid var(--rule);
+  }
+
+  .btn-copy { background: var(--ink); color: white; border-color: var(--ink); }
+  .btn-copy:hover { background: #333; }
+  .btn-regen { background: white; color: var(--mid); }
+  .btn-regen:hover { border-color: var(--ink); color: var(--ink); }
+
+  /* USAGE METER */
+  .usage-bar-wrap {
+    margin-top: 16px;
+    padding: 14px 20px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+  }
+
+  .usage-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--mid);
+    margin-bottom: 8px;
+  }
+
+  .usage-bar-bg {
+    height: 5px;
+    background: var(--rule);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .usage-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 10px;
+    transition: width 0.4s;
+  }
+
+  .upgrade-cta {
+    margin-top: 12px;
+    padding: 14px;
+    background: linear-gradient(135deg, #0f3d22 0%, #1a6b3c 100%);
+    border-radius: 8px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    display: none;
+  }
+
+  .upgrade-cta.show { display: flex; }
+
+  .upgrade-cta p { font-size: 13px; line-height: 1.4; opacity: 0.9; }
+  .upgrade-cta strong { display: block; font-size: 14px; margin-bottom: 2px; }
+
+  .btn-upgrade {
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 16px;
+    background: white;
+    color: var(--accent);
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-upgrade:hover { background: var(--accent-light); }
+
+  /* LOADING */
+  .loading {
+    display: none;
+    padding: 32px 20px;
+    text-align: center;
+    color: var(--mid);
+    font-size: 14px;
+  }
+
+  .loading.show { display: block; }
+
+  .spinner {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--rule);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-bottom: 12px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* EXAMPLES */
+  .examples {
+    margin-top: 8px;
+  }
+
+  .example-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 10px;
+  }
+
+  .example-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .example-chip {
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px dashed var(--rule);
+    background: transparent;
+    color: var(--mid);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: left;
+  }
+
+  .example-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    border-top: 1px solid var(--rule);
+    font-size: 12px;
+    color: var(--mid);
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Reply<span>Genius</span></div>
+  <div class="badge">✦ Free Beta</div>
+</header>
+
+<div class="hero">
+  <div class="hero-eyebrow">AI-Powered Review Management</div>
+  <h1>Turn every review into<br><em>a perfect reply</em></h1>
+  <p>Paste any customer review. Get a professional, on-brand response in seconds. Works for Amazon, Etsy, Yelp, and Google.</p>
+
+  <div class="platforms">
+    <button class="platform-pill active" onclick="setPlatform(this, 'Amazon')">🛒 Amazon</button>
+    <button class="platform-pill" onclick="setPlatform(this, 'Etsy')">🎨 Etsy</button>
+    <button class="platform-pill" onclick="setPlatform(this, 'Yelp')">⭐ Yelp</button>
+    <button class="platform-pill" onclick="setPlatform(this, 'Google')">🔍 Google</button>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num">2M+</div>
+    <div class="stat-label">Amazon sellers</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">~8min</div>
+    <div class="stat-label">saved per reply</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">$0</div>
+    <div class="stat-label">to start</div>
+  </div>
+</div>
+
+<div class="tool">
+
+  <!-- INPUT CARD -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-header-icon">✍️</div>
+      <div class="card-header-title">Paste the customer review</div>
+      <div class="card-header-sub" id="platform-label">Amazon</div>
+    </div>
+    <div class="card-body">
+
+      <!-- STARS -->
+      <div class="stars-row" id="stars">
+        <span class="star" onclick="setStar(1)">★</span>
+        <span class="star" onclick="setStar(2)">★</span>
+        <span class="star" onclick="setStar(3)">★</span>
+        <span class="star" onclick="setStar(4)">★</span>
+        <span class="star lit" onclick="setStar(5)">★</span>
+      </div>
+
+      <!-- REVIEW TYPE -->
+      <div class="review-types">
+        <button class="type-btn positive active" onclick="setType(this, 'positive')">😊 Positive</button>
+        <button class="type-btn negative" onclick="setType(this, 'negative')">😤 Negative</button>
+        <button class="type-btn neutral" onclick="setType(this, 'neutral')">😐 Neutral / Mixed</button>
+      </div>
+
+      <textarea id="review-input" placeholder="Paste the customer review here...&#10;&#10;Example: &quot;Love this product! Arrived fast and exactly as described. Will definitely buy again.&quot;"></textarea>
+
+      <!-- EXAMPLES -->
+      <div class="examples" style="margin-top:12px;">
+        <div class="example-label">Quick examples</div>
+        <div class="example-chips">
+          <button class="example-chip" onclick="loadExample('positive')">⭐ 5-star praise</button>
+          <button class="example-chip" onclick="loadExample('negative')">💢 Angry complaint</button>
+          <button class="example-chip" onclick="loadExample('shipping')">📦 Shipping issue</button>
+          <button class="example-chip" onclick="loadExample('mixed')">🤔 Mixed feelings</button>
+        </div>
+      </div>
+
+      <!-- TONE -->
+      <div style="margin-top:16px;">
+        <div class="example-label">Reply tone</div>
+        <div class="tone-row">
+          <button class="tone-chip active" onclick="setTone(this, 'professional')">Professional</button>
+          <button class="tone-chip" onclick="setTone(this, 'friendly')">Friendly & Warm</button>
+          <button class="tone-chip" onclick="setTone(this, 'concise')">Short & Direct</button>
+          <button class="tone-chip" onclick="setTone(this, 'apologetic')">Apologetic</button>
+        </div>
+      </div>
+
+      <button class="btn-generate" id="gen-btn" onclick="generateReply()">
+        <span>✦</span> Generate Reply
+      </button>
+
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <div>Writing your reply...</div>
+  </div>
+
+  <!-- OUTPUT CARD -->
+  <div class="output-card" id="output-card">
+    <div class="card-header">
+      <div class="card-header-icon">💬</div>
+      <div class="card-header-title">Your reply</div>
+      <div class="card-header-sub" id="output-badge" style="color: var(--accent); font-weight:600;">Ready to copy</div>
+    </div>
+    <div class="output-body" id="output-text"></div>
+    <div class="output-actions">
+      <button class="btn-copy" onclick="copyReply()">Copy reply</button>
+      <button class="btn-regen" onclick="generateReply()">↻ Regenerate</button>
+    </div>
+  </div>
+
+  <!-- USAGE METER -->
+  <div class="usage-bar-wrap">
+    <div class="usage-label">
+      <span>Free replies used</span>
+      <span id="usage-count">0 / 3</span>
+    </div>
+    <div class="usage-bar-bg">
+      <div class="usage-bar-fill" id="usage-fill" style="width: 0%"></div>
+    </div>
+
+    <div class="upgrade-cta" id="upgrade-cta">
+      <div>
+        <strong>You've used all free replies</strong>
+        <p>Upgrade to Pro for unlimited replies — $29/month</p>
+      </div>
+      <button class="btn-upgrade" onclick="window.open('https://buy.stripe.com/yourlink','_blank')">Upgrade →</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 ReplyGenius · <a href="#">Privacy</a> · <a href="#">Terms</a> · Built for Amazon, Etsy, Yelp & Google sellers
+</footer>
+
+<script>
+  let platform = 'Amazon';
+  let reviewType = 'positive';
+  let tone = 'professional';
+  let starRating = 5;
+  let usageCount = 0;
+  const FREE_LIMIT = 3;
+
+  const examples = {
+    positive: "Love this product! It arrived super fast and was exactly as described. The quality is amazing and my kids absolutely love it. Will definitely be ordering again. 5 stars!",
+    negative: "Terrible experience. The item arrived broken and the packaging was a mess. I contacted customer service and got no response. Complete waste of money. DO NOT BUY.",
+    shipping: "Product itself seems fine but it took 3 weeks to arrive when it said 5-7 days. No tracking updates for 10 days. Very frustrating experience with delivery.",
+    mixed: "The product looks nice and feels quality, but the instructions were confusing and one piece was missing. Had to figure it out myself. Would be 5 stars if it came complete."
+  };
+
+  function setPlatform(el, p) {
+    document.querySelectorAll('.platform-pill').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    platform = p;
+    document.getElementById('platform-label').textContent = p;
+  }
+
+  function setType(el, t) {
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    reviewType = t;
+    if (t === 'positive') setStar(5);
+    else if (t === 'negative') setStar(1);
+    else setStar(3);
+  }
+
+  function setTone(el, t) {
+    document.querySelectorAll('.tone-chip').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    tone = t;
+  }
+
+  function setStar(n) {
+    starRating = n;
+    document.querySelectorAll('.star').forEach((s, i) => {
+      s.classList.toggle('lit', i < n);
+    });
+    if (n >= 4) setTypeByName('positive');
+    else if (n <= 2) setTypeByName('negative');
+    else setTypeByName('neutral');
+  }
+
+  function setTypeByName(t) {
+    const btn = document.querySelector(`.type-btn.${t}`);
+    if (btn) setType(btn, t);
+  }
+
+  function loadExample(key) {
+    document.getElementById('review-input').value = examples[key];
+    if (key === 'positive') setStar(5);
+    else if (key === 'negative') setStar(1);
+    else setStar(3);
+  }
+
+  async function generateReply() {
+    const review = document.getElementById('review-input').value.trim();
+    if (!review) {
+      document.getElementById('review-input').focus();
+      document.getElementById('review-input').style.borderColor = '#e74c3c';
+      setTimeout(() => document.getElementById('review-input').style.borderColor = '', 1500);
+      return;
+    }
+
+    if (usageCount >= FREE_LIMIT) {
+      document.getElementById('upgrade-cta').classList.add('show');
+      return;
+    }
+
+    document.getElementById('loading').classList.add('show');
+    document.getElementById('output-card').classList.remove('visible');
+    document.getElementById('gen-btn').disabled = true;
+
+    const prompt = `You are a professional customer service expert helping a ${platform} seller craft the perfect reply to a customer review.
+
+Platform: ${platform}
+Review type: ${reviewType}
+Star rating: ${starRating}/5
+Requested tone: ${tone}
+
+Customer review:
+"${review}"
+
+Write a reply that:
+- Feels genuine, not robotic or templated
+- Matches the requested tone (${tone})
+- Is appropriate for ${platform}'s audience
+- Is 2-4 sentences for positive reviews, 3-5 sentences for negative/neutral
+- For negative reviews: acknowledges the issue, apologizes sincerely, offers a resolution
+- For positive reviews: thanks the customer warmly and reinforces the brand
+- Does NOT use overly corporate language or excessive emojis
+- Does NOT start with "Thank you for your review" (too generic)
+
+Write ONLY the reply text, nothing else.`;
+
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-6",
+          max_tokens: 1000,
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+
+      const data = await response.json();
+      const reply = data.content?.[0]?.text || "Could not generate a reply. Please try again.";
+
+      document.getElementById('output-text').textContent = reply;
+      document.getElementById('output-card').classList.add('visible');
+
+      usageCount++;
+      updateUsage();
+
+    } catch (err) {
+      document.getElementById('output-text').textContent = "Something went wrong. Please try again.";
+      document.getElementById('output-card').classList.add('visible');
+    }
+
+    document.getElementById('loading').classList.remove('show');
+    document.getElementById('gen-btn').disabled = false;
+    document.getElementById('output-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function updateUsage() {
+    const pct = (usageCount / FREE_LIMIT) * 100;
+    document.getElementById('usage-fill').style.width = pct + '%';
+    document.getElementById('usage-count').textContent = `${usageCount} / ${FREE_LIMIT}`;
+    if (usageCount >= FREE_LIMIT) {
+      document.getElementById('usage-fill').style.background = '#c0392b';
+      document.getElementById('upgrade-cta').classList.add('show');
+    }
+  }
+
+  function copyReply() {
+    const text = document.getElementById('output-text').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.btn-copy');
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => btn.textContent = 'Copy reply', 1800);
+    });
+  }
+</script>
+</body>
+</html>
